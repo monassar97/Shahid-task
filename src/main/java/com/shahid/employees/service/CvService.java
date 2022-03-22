@@ -1,7 +1,10 @@
 package com.shahid.employees.service;
 
 import com.shahid.employees.adapter.repository.CvRepository;
+import com.shahid.employees.adapter.repository.EmployeeRepository;
 import com.shahid.employees.model.entity.Cv;
+import com.shahid.employees.model.enums.BucketName;
+import com.shahid.employees.util.exception.EmployeeNotFoundException;
 import com.shahid.employees.util.exception.FileNotFoundException;
 import lombok.AllArgsConstructor;
 import org.apache.http.entity.ContentType;
@@ -16,11 +19,15 @@ import java.util.*;
 public class CvService {
     private final FileStore fileStore;
     private final CvRepository repository;
+    private final EmployeeRepository employeeRepository;
 
-    public Cv saveCv(String title, String description, MultipartFile file) {
+    public Cv saveCv(String employeeId, String description, MultipartFile file) {
         //check if the file is empty
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload empty file");
+        }
+        if (!employeeRepository.existsById(employeeId)) {
+            throw new EmployeeNotFoundException();
         }
         //Check if the file is an image
         if (!Arrays.asList(ContentType.create("application/pdf").getMimeType(),
@@ -32,16 +39,16 @@ public class CvService {
         metadata.put("Content-Type", file.getContentType());
         metadata.put("Content-Length", String.valueOf(file.getSize()));
         //Save Image in S3 and then save Cv in the database
-        String path = String.format("%s%s", "https://shahid.employee.buckets.s3.us-east-1.amazonaws.com/", UUID.randomUUID());
+        String path = String.format("%s", BucketName.EMPLOYEE_IMAGE.getBucketName());
         String fileName = String.format("%s", file.getOriginalFilename());
         try {
-            fileStore.upload(path, fileName, Optional.of(metadata), file.getInputStream());
+            fileStore.upload(fileName, path, Optional.of(metadata), file.getInputStream());
         } catch (IOException e) {
             throw new IllegalStateException("Failed to upload file", e);
         }
         Cv cv = Cv.builder()
                 .description(description)
-                .title(title)
+                .title(employeeId)
                 .imagePath(path)
                 .imageFileName(fileName)
                 .build();
@@ -49,7 +56,7 @@ public class CvService {
         return repository.findByTitle(cv.getTitle());
     }
 
-    public byte[] downloadCvImage(Long id) {
+    public byte[] downloadCvImage(String id) {
         if (!repository.findById(id).isPresent()) {
             throw new FileNotFoundException();
         }

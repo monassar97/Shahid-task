@@ -2,11 +2,11 @@ package com.shahid.employees.service;
 
 import com.shahid.employees.adapter.repository.EmployeeRepository;
 import com.shahid.employees.model.common.EmployeeSearchFilter;
+import com.shahid.employees.model.dto.AddEmployeeDTO;
 import com.shahid.employees.model.dto.RaiseSalaryDTO;
 import com.shahid.employees.model.dto.UpdateEmployeeDTO;
 import com.shahid.employees.model.entity.Employee;
 import com.shahid.employees.model.enums.ActiveStatus;
-import com.shahid.employees.util.exception.EmployeeAlreadyExistException;
 import com.shahid.employees.util.exception.EmployeeNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class EmployeeService {
@@ -30,12 +31,15 @@ public class EmployeeService {
         this.mongoOperations = mongoOperations;
     }
 
-    public Employee addEmployee(Employee employee) {
-        if (employeeRepository.findById(employee.getEmployeeId()).isPresent()) {
-            throw new EmployeeAlreadyExistException();
-        }
-
-        return employeeRepository.save(employee);
+    public Employee addEmployee(AddEmployeeDTO employeeDTO) {
+        return employeeRepository.save(Employee.builder()
+                .employeeId(UUID.randomUUID().toString())
+                .name(employeeDTO.getName())
+                .manager(employeeDTO.getManager())
+                .department(employeeDTO.getDepartment())
+                .activeStatus(employeeDTO.getActiveStatus())
+                .salary(employeeDTO.getSalary())
+                .build());
     }
 
     public Employee updateEmployee(String employeeId, UpdateEmployeeDTO updateEmployeeDTO) {

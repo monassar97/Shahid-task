@@ -1,6 +1,7 @@
 package com.shahid.employees.adapter.rest;
 
 import com.shahid.employees.model.common.EmployeeSearchFilter;
+import com.shahid.employees.model.dto.AddEmployeeDTO;
 import com.shahid.employees.model.dto.RaiseSalaryDTO;
 import com.shahid.employees.model.dto.UpdateEmployeeDTO;
 import com.shahid.employees.model.entity.Employee;
@@ -22,7 +23,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public Employee addEmployee(@RequestBody Employee employee) {
+    public Employee addEmployee(@RequestBody AddEmployeeDTO employee) {
         return employeeService.addEmployee(employee);
     }
 
@@ -52,7 +53,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/top-paid")
-    public Page<Employee> findTopPaidEmployees(@RequestParam int pageNo, @RequestParam int pageSize) {
+    public Page<Employee> findTopPaidEmployees(@RequestParam(defaultValue = "0", required = false) int pageNo, @RequestParam(defaultValue = "10", required = false) int pageSize) {
         return employeeService.getTopPaid(pageNo, pageSize);
     }
 

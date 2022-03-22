@@ -29,14 +29,14 @@ public class CvController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Cv> saveCv(@RequestParam("title") String title,
+    public ResponseEntity<Cv> saveCv(@RequestParam("employee id") String employeeId,
                                      @RequestParam("description") String description,
                                      @RequestParam("file") MultipartFile file) {
-        return new ResponseEntity<Cv>(service.saveCv(title, description, file), HttpStatus.OK);
+        return new ResponseEntity<Cv>(service.saveCv(employeeId, description, file), HttpStatus.OK);
     }
 
     @GetMapping(value = "{id}/image/download")
-    public byte[] downloadCvImage(@PathVariable("id") Long id) {
+    public byte[] downloadCvImage(@PathVariable("id") String id) {
         return service.downloadCvImage(id);
     }
 }
