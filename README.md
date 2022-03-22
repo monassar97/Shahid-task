@@ -22,7 +22,7 @@ Right click on project > Run as > Maven clean (you can directly do this using **
 check **Update snapshots forcefully** option and press ok.
 6. Now you can refresh your project. Run clean and build project.
 
-<h3>Guide to access enpoints using swagegr</h3>
+<h3>Guide to access enpoints using swagger</h3>
 
 1.open this url after you build and run the Project (http://localhost:9090/swagger-ui/index.html).
 2.enter the credentials (username : user, password : 123)
