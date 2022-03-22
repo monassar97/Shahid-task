@@ -4,3 +4,11 @@ springdoc:
   swagger-ui:
     tagsSorter: alpha
     operationsSorter: method
+security:
+  enable:
+    csrf: false
+spring:
+  security:
+    user:
+      password: "123"
+      name: "user"

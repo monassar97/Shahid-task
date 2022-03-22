@@ -6,6 +6,8 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
+import com.shahid.employees.util.exception.FileDownloadFailedException;
+import com.shahid.employees.util.exception.FileUploadFailedException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +34,7 @@ public class FileStore {
         try {
             amazonS3.putObject(path, fileName, inputStream, objectMetadata);
         } catch (AmazonServiceException e) {
-            throw new IllegalStateException("Failed to upload the file", e);
+            throw new FileUploadFailedException();
         }
     }
 
@@ -42,7 +44,7 @@ public class FileStore {
             S3ObjectInputStream objectContent = object.getObjectContent();
             return IOUtils.toByteArray(objectContent);
         } catch (AmazonServiceException | IOException e) {
-            throw new IllegalStateException("Failed to download the file", e);
+            throw new FileDownloadFailedException();
         }
     }
 

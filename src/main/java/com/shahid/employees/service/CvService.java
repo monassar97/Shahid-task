@@ -4,8 +4,7 @@ import com.shahid.employees.adapter.repository.CvRepository;
 import com.shahid.employees.adapter.repository.EmployeeRepository;
 import com.shahid.employees.model.entity.Cv;
 import com.shahid.employees.model.enums.BucketName;
-import com.shahid.employees.util.exception.EmployeeNotFoundException;
-import com.shahid.employees.util.exception.FileNotFoundException;
+import com.shahid.employees.util.exception.*;
 import lombok.AllArgsConstructor;
 import org.apache.http.entity.ContentType;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,7 @@ public class CvService {
     public Cv saveCv(String employeeId, String description, MultipartFile file) {
         //check if the file is empty
         if (file.isEmpty()) {
-            throw new IllegalStateException("Cannot upload empty file");
+            throw new UploadEmptyFileException();
         }
         if (!employeeRepository.existsById(employeeId)) {
             throw new EmployeeNotFoundException();
@@ -32,7 +31,7 @@ public class CvService {
         //Check if the file is an image
         if (!Arrays.asList(ContentType.create("application/pdf").getMimeType(),
                 ContentType.create("application/msword").getMimeType()).contains(file.getContentType())) {
-            throw new IllegalStateException("FIle uploaded is not an image");
+            throw new UploadWrongTypeFileException();
         }
         //get file metadata
         Map<String, String> metadata = new HashMap<>();
@@ -44,16 +43,16 @@ public class CvService {
         try {
             fileStore.upload(fileName, path, Optional.of(metadata), file.getInputStream());
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to upload file", e);
+            throw new FileUploadFailedException();
         }
         Cv cv = Cv.builder()
+                .id(UUID.randomUUID().toString())
                 .description(description)
-                .title(employeeId)
+                .employeeId(employeeId)
                 .imagePath(path)
                 .imageFileName(fileName)
                 .build();
-        repository.save(cv);
-        return repository.findByTitle(cv.getTitle());
+        return repository.save(cv);
     }
 
     public byte[] downloadCvImage(String id) {

@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Cv {
     @Id
     private String id;
-    private String title;
+    private String employeeId;
     private String description;
     private String imagePath;//add employeeId
     private String imageFileName;

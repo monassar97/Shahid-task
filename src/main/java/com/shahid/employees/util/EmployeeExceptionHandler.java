@@ -1,8 +1,6 @@
 package com.shahid.employees.util;
 
-import com.shahid.employees.util.exception.EmployeeAlreadyExistException;
-import com.shahid.employees.util.exception.EmployeeNotFoundException;
-import com.shahid.employees.util.exception.FileNotFoundException;
+import com.shahid.employees.util.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -43,5 +41,45 @@ public class EmployeeExceptionHandler {
         body.put("message", ex.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(FileUploadFailedException.class)
+    public ResponseEntity<Object> handleFileUploadFailedException(FileUploadFailedException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("code", "400");
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(FileDownloadFailedException.class)
+    public ResponseEntity<Object> handleFileDownloadFailedException(FileDownloadFailedException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("code", "400");
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UploadEmptyFileException.class)
+    public ResponseEntity<Object> handleFileDownloadFailedException(UploadEmptyFileException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("code", "400");
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UploadWrongTypeFileException.class)
+    public ResponseEntity<Object> handleFileDownloadFailedException(UploadWrongTypeFileException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("code", "400");
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 }
