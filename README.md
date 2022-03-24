@@ -30,4 +30,5 @@ check **Update snapshots forcefully** option and press ok.
 
 ![aTGrq](https://user-images.githubusercontent.com/40933527/159552539-c8a8098e-6d29-43d0-b4ea-525d24bf25d7.jpg)
 
-![Capture1](https://user-images.githubusercontent.com/40933527/159552063-e3e93f60-1f1a-451f-8fac-2d8b7578a39b.PNG)
+![swagger](https://user-images.githubusercontent.com/40933527/159917588-40a9e295-cbea-4dde-8757-a50465ee0ec2.PNG)
+
