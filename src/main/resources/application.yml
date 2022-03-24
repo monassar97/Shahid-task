@@ -11,6 +11,6 @@ spring:
       name: "user"
 config:
   aws:
-    access-key: "AKIASFHGCAHGXAADMB6Y"
-    secret-key: "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"
+    access-key: "AKIASFHGCAHG3XLLIAND"
+    secret-key: "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"
     region: "us-east-1"
