@@ -28,7 +28,7 @@ public class CvService {
         if (!employeeRepository.existsById(employeeId)) {
             throw new EmployeeNotFoundException();
         }
-        //Check if the file is an image
+        //Check if the file is pdf or msword
         if (!Arrays.asList(ContentType.create("application/pdf").getMimeType(),
                 ContentType.create("application/msword").getMimeType()).contains(file.getContentType())) {
             throw new UploadWrongTypeFileException();
@@ -37,8 +37,8 @@ public class CvService {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("Content-Type", file.getContentType());
         metadata.put("Content-Length", String.valueOf(file.getSize()));
-        //Save Image in S3 and then save Cv in the database
-        String path = String.format("%s", BucketName.EMPLOYEE_IMAGE.getBucketName());
+        //Save cv in S3 and then save Cv in the database
+        String path = String.format("%s", BucketName.EMPLOYEE_CV_BUCKET.getBucketName());
         String fileName = String.format("%s", file.getOriginalFilename());
         try {
             fileStore.upload(fileName, path, Optional.of(metadata), file.getInputStream());
@@ -55,17 +55,18 @@ public class CvService {
         return repository.save(cv);
     }
 
-    public byte[] downloadCvImage(String id) {
-        if (!repository.findById(id).isPresent()) {
+    public byte[] downloadCv(String employeeId) {
+        if (!employeeRepository.existsById(employeeId)) {
+            throw new EmployeeNotFoundException();
+        }
+        if (!repository.findByEmployeeId(employeeId).isPresent()) {
             throw new FileNotFoundException();
         }
-        Cv cv = repository.findById(id).get();
+        Cv cv = repository.findByEmployeeId(employeeId).get();
         return fileStore.download(cv.getImagePath(), cv.getImageFileName());
     }
 
     public List<Cv> getAllCvs() {
-        List<Cv> cvs = new ArrayList<>();
-        repository.findAll().forEach(cvs::add);
-        return cvs;
+        return repository.findAll();
     }
 }

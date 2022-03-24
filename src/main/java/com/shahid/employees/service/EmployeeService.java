@@ -69,7 +69,7 @@ public class EmployeeService {
         Query mongoQuery = new Query();
 
         if (!ObjectUtils.isEmpty(searchFilter.getName())) {
-            mongoQuery.addCriteria(Criteria.where("name").is(searchFilter.getDepartment()));
+            mongoQuery.addCriteria(Criteria.where("name").is(searchFilter.getName()));
         }
         if (!ObjectUtils.isEmpty(searchFilter.getDepartment())) {
             mongoQuery.addCriteria(Criteria.where("department").in(searchFilter.getDepartment()));

@@ -6,6 +6,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum BucketName {
-    EMPLOYEE_IMAGE("shahid.employee.buckets");
+    EMPLOYEE_CV_BUCKET("shahid.employee.buckets");
     private final String bucketName;
 }

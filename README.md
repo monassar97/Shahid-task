@@ -25,7 +25,9 @@ check **Update snapshots forcefully** option and press ok.
 <h3>Guide to access enpoints using swagger</h3>
 
 1.open this url after you build and run the Project (http://localhost:9090/swagger-ui/index.html).
+
 2.enter the credentials (username : user, password : 123)
 
 ![aTGrq](https://user-images.githubusercontent.com/40933527/159552539-c8a8098e-6d29-43d0-b4ea-525d24bf25d7.jpg)
+
 ![Capture1](https://user-images.githubusercontent.com/40933527/159552063-e3e93f60-1f1a-451f-8fac-2d8b7578a39b.PNG)

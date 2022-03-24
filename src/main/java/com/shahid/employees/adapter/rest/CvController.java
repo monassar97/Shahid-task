@@ -35,8 +35,8 @@ public class CvController {
         return new ResponseEntity<Cv>(service.saveCv(employeeId, description, file), HttpStatus.OK);
     }
 
-    @GetMapping(value = "{id}/image/download")
-    public byte[] downloadCvImage(@PathVariable("id") String id) {
-        return service.downloadCvImage(id);
+    @GetMapping(value = "{employee-id}")
+    public byte[] downloadCv(@PathVariable("employee-id") String employeeId) {
+        return service.downloadCv(employeeId);
     }
 }

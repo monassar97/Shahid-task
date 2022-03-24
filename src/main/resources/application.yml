@@ -12,3 +12,8 @@ spring:
     user:
       password: "123"
       name: "user"
+config:
+  aws:
+    access-key: "AKIASFHGCAHGXAADMB6Y"
+    secret-key: "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"
+    region: "us-east-1"
